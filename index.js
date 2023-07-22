@@ -150,7 +150,16 @@ app.get('/*', function(req, res){
 io.set('origins', '*:*');
 io.on('connection', function(socket){
   socket.on('join', function(data){
-
+     snakes[socket.id] = {
+      x:rint(10,mapDim-10),
+      y:rint(10,mapDim-10),
+      r:80,
+      angle:0,
+      dim:5,
+      speed:2,
+      l:5,
+      history:[]
+    }
      socket.emit('start')
   }); 
   socket.on('getGame', function(data){
