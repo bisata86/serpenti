@@ -133,20 +133,35 @@
                 $('.snake').remove()
                 for (var i in data.snakes) {
                     $('#'+i).remove()
-                        $('#cnt').append('<div class="snake" id="'+i+'"></div>')
+
+                    
+                    var l = (data.snakes[i].x-gapX-data.snakes[i].dim/2)*scale;
+                    var r = (data.snakes[i].y-gapY-data.snakes[i].dim/2)*scale
+
+                    if(l>0 && l<$(window).width() &&
+                            r>0 && r<$(window).height()) {
+
+                    $('#cnt').append('<div class="snake" id="'+i+'"></div>')
                     $('#'+i).css('width',data.snakes[i].dim*scale)
                     $('#'+i).css('height',data.snakes[i].dim*scale)
-                    $('#'+i).css('left',(data.snakes[i].x-gapX-data.snakes[i].dim/2)*scale)
-                    $('#'+i).css('top',(data.snakes[i].y-gapY-data.snakes[i].dim/2)*scale)
+
+                    $('#'+i).css('left',l)
+                    $('#'+i).css('top',r)
+                    }
                     if(data.snakes[i].history) {
                        for (var j = 0; j < data.snakes[i].history.length; j++) {
                            var u = i+'his'+j;
                            $('#'+u).remove()
-                           $('#cnt').append('<div class="snake" id="'+u+'"></div>')
-                            $('#'+u).css('left',(data.snakes[i].history[j].x-gapX-data.snakes[i].dim/2)*scale)
-                            $('#'+u).css('top',(data.snakes[i].history[j].y-gapY-data.snakes[i].dim/2)*scale)
-                            $('#'+u).css('width',data.snakes[i].dim*scale)
-                            $('#'+u).css('height',data.snakes[i].dim*scale)
+                           var l = (data.snakes[i].history[j].x-gapX-data.snakes[i].dim/2)*scale
+                           var r = (data.snakes[i].history[j].y-gapY-data.snakes[i].dim/2)*scale
+                           if(l>0 && l<$(window).width() &&
+                            r>0 && r<$(window).height()) {
+                               $('#cnt').append('<div class="snake" id="'+u+'"></div>')
+                                $('#'+u).css('left',l)
+                                $('#'+u).css('top',r)
+                                $('#'+u).css('width',data.snakes[i].dim*scale)
+                                $('#'+u).css('height',data.snakes[i].dim*scale)
+                            }
                        }
                     }
                     if(data.snakes[i].dead)
@@ -155,12 +170,17 @@
                 }
                 $('.ball').remove()
                 for (var i in data.balls) {
-                    
-                    $('#cnt').append('<div class="ball" id="'+i+'"></div>')
-                    $('#'+i).css('width',data.balls[i].dim*scale)
-                    $('#'+i).css('height',data.balls[i].dim*scale)
-                    $('#'+i).css('left',(data.balls[i].x-gapX-data.balls[i].dim/2)*scale)
-                    $('#'+i).css('top',(data.balls[i].y-gapY-data.balls[i].dim/2)*scale)
+                    var l = (data.balls[i].x-gapX-data.balls[i].dim/2)*scale;
+                    var r = (data.balls[i].y-gapY-data.balls[i].dim/2)*scale;
+                    if(l>0 && l<$(window).width() &&
+                        r>0 && r<$(window).height()) {
+                        $('#cnt').append('<div class="ball" id="'+i+'"></div>')
+                        $('#'+i).css('width',data.balls[i].dim*scale)
+                        $('#'+i).css('height',data.balls[i].dim*scale)
+                        
+                        $('#'+i).css('left',l)
+                        $('#'+i).css('top',r)
+                    }
                 }
                 if($('.wallTop').length==0)
                 $('#cnt').append('<div class="wallTop wall"></div>')
