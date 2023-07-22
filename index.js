@@ -16,6 +16,7 @@ var game = {};
 var ballLimit = 1000;
 var mapDim = 1000;
 var snakes = {};
+for (var i = 0; i < 10; i++) {
       snakes[uuid()] = {
       x:rint(10,mapDim-10),
       y:rint(10,mapDim-10),
@@ -27,6 +28,8 @@ var snakes = {};
       history:[],
       ai:true
     }
+}
+
 var balls = {};
 for (var i = 0; i < ballLimit; i++) {
       balls[uuid()] = {
@@ -104,11 +107,25 @@ mainInt = setInterval(function(){
 
       }
       if(snakes[i].ai) {
-        var s = rint(0,5);
-        var t = rint(0,1) 
-        if(t==0) s = -s
+        var s = rint(0,10);
         snakes[i].angle+=s
       }
+
+      for (var k in snakes) {
+        if(k!=i && !snakes[k].dead) {
+          for (var p in snakes[k].history) {
+              var a = snakes[k].history[p].x - snakes[i].x;
+              var b = snakes[k].history[p].y - snakes[i].y;
+              var c = Math.sqrt( a*a + b*b );
+              if(c<1) {
+                console.log('collisionn')
+                snakes[i].dead = true;
+                break;
+              }
+          }
+        }
+      }
+
 
   } 
         var nb = {}
@@ -157,14 +174,6 @@ io.on('connection', function(socket){
   });
 
   function sendGame() {
-    for (var i in snakes) {
-      var a = snakes[socket.id].x - snakes[i].x;
-      var b = snakes[socket.id].y - snakes[i].y;
-      var c = Math.sqrt( a*a + b*b );
-      if(c<snakes[socket.id].r) {
-
-      }
-    }
     var filteredBalls = {};
     for (var i in balls) {
       var a = balls[i].x - snakes[socket.id].x;

@@ -14,6 +14,9 @@
             padding:0;
             margin:0;
         }
+        html, body, #cnt {
+            overflow: hidden;
+        }
         #cnt {
             width: 100vw;
             height: 100vh;
@@ -53,6 +56,8 @@
             position: absolute;
             width: 40px;
             height: 40px;
+            top:30;
+            left:30;
             border-radius: 100%;
             background-color: red;
             pointer-events: none;
@@ -105,11 +110,11 @@
                 }
             })
             $('#joy').on('touchstart',function(e){
-                speed = 3
+                //speed = 3
                 joyActive = true;
             })
             $('#joy').on('touchend',function(e){
-                speed = 2
+                //speed = 2
                 joyActive = false;
             })
 
