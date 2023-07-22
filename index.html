@@ -96,7 +96,6 @@
                  var rect = e.target.getBoundingClientRect();
                 var x = e.targetTouches[0].pageX - rect.left;
                 var y = e.targetTouches[0].pageY - rect.top;
-                 console.log(x)
                 if(joyActive) {
                     var a = {x:50,y:0}
                     var b = {x:50,y:50}
@@ -131,8 +130,9 @@
                 scale = 20/data.snakes[socket.id].dim
                 var gapX = ((data.snakes[socket.id].x)-($(window).width()/2/scale))
                 var gapY = ((data.snakes[socket.id].y)-$(window).height()/2/scale)
+                $('.snake').remove()
                 for (var i in data.snakes) {
-                    if($('#'+i).length==0)
+                    $('#'+i).remove()
                         $('#cnt').append('<div class="snake" id="'+i+'"></div>')
                     $('#'+i).css('width',data.snakes[i].dim*scale)
                     $('#'+i).css('height',data.snakes[i].dim*scale)
@@ -191,7 +191,6 @@
             socket.on('start',startGame);
             function startGame(data){
                 setInterval(function(){
-                    console.log(angle)
                     socket.emit('getGame',{angle:angle,speed:speed}); 
                 },50)
             }

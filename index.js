@@ -16,7 +16,7 @@ var game = {};
 var ballLimit = 1000;
 var mapDim = 1000;
 var snakes = {};
-for (var i = 0; i < 10; i++) {
+for (var i = 0; i < 20; i++) {
       snakes[uuid()] = {
       x:rint(10,mapDim-10),
       y:rint(10,mapDim-10),
@@ -120,6 +120,13 @@ mainInt = setInterval(function(){
               if(c<1) {
                 console.log('collisionn')
                 snakes[i].dead = true;
+                for (var n in snakes[i].history) {
+                  balls[uuid()] = {
+                    x:snakes[i].history[n].x,
+                    y:snakes[i].history[n].y,
+                    dim:1
+                  }
+                }
                 break;
               }
           }
