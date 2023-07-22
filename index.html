@@ -98,7 +98,9 @@
                     var c = {x:x,y:y}
                     angle = 180 - ((find_angle(a,b,c) * 180) / Math.PI)
                     if(x<50) angle = - angle
+                    if(y>15 && y<80)
                     $('.pad').css('top',y-20)
+                    if(x>15 && x<80)
                     $('.pad').css('left',x-20)
                 }
             })
