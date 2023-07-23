@@ -132,11 +132,15 @@
             }
             socket.on('game',displayGame);
             function displayGame(data){
+                //console.log(Object.keys(data.snakes).length)
+                
+
                 var scale = 1;
                 scale = 20/data.snakes[socket.id].dim
                 var gapX = ((data.snakes[socket.id].x)-($(window).width()/2/scale))
                 var gapY = ((data.snakes[socket.id].y)-$(window).height()/2/scale)
                 //$('.snake').remove()
+                $('.snake').addClass('remove');
                 for (var i in data.snakes) {
                     // $('#'+i).remove()
 
@@ -157,8 +161,9 @@
                     // var tt = 1;
                     // if(data.snakes[i].l>30)
                     //     tt = Math.floor(data.snakes[i].l/20)+1
-                    $('.snake').addClass('remove');
+                    //
                     if(data.snakes[i].history) {
+                       
                        for (var j = 0; j < data.snakes[i].history.length; j+=1) {
                            var u = i+'his'+j;
                            //$('#'+u).remove()
@@ -166,7 +171,7 @@
                            var r = (data.snakes[i].history[j].y-gapY-data.snakes[i].dim/2)*scale
                            if(l>0 && l<$(window).width() &&
                             r>0 && r<$(window).height()) {
-                               if($('#'+u).length==0)
+                               //if($('#'+u).length==0)
                                $('#cnt').append('<div class="snake" id="'+u+'"></div>')
                                 $('#'+u).css('left',l)
                                 $('#'+u).css('top',r)
@@ -176,8 +181,8 @@
                             }
                        }
                     }
-                    if(data.snakes[i].dead)
-                    $('#'+i).remove()
+                     if(data.snakes[i].dead)
+                         $('#'+i).remove()
 
                 }
                 $('.ball').addClass('remove');

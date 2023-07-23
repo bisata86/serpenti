@@ -17,7 +17,7 @@ var ballLimit = 1000;
 var mapDim = 1000;
 var initailSpeed = .1;
 var snakes = {};
-addAiSnake(30)
+addAiSnake(150)
 
 function addAiSnake(n) {
   for (var i = 0; i < n; i++) {
@@ -50,6 +50,7 @@ mainInt = setInterval(function(){
   for (var i in snakes) {
     //if(snakes[i].x<100)
       if(!snakes[i].dead) {
+        snakes[i].speed = snakes[i].dim/2
         var r = rotate(snakes[i].x,snakes[i].y,snakes[i].x,snakes[i].y+snakes[i].speed,snakes[i].angle)
         
         snakes[i].x = r[0]
@@ -139,7 +140,7 @@ mainInt = setInterval(function(){
           };
         }
         snakes = nb
-},200)
+},100)
 app.get('/*', function(req, res){
   res.sendfile('./index.html'); 
 }); 
@@ -163,7 +164,7 @@ io.on('connection', function(socket){
      if( snakes[socket.id]) {
      snakes[socket.id].angle = data.angle
      //snakes[socket.id].speed = data.speed
-     snakes[socket.id].speed = snakes[socket.id].dim/2
+     //snakes[socket.id].speed = snakes[socket.id].dim/2
      sendGame();
    }
 
@@ -197,11 +198,11 @@ io.on('connection', function(socket){
       if(c<snakes[socket.id].r) {
         filteredSnakes[i] = snakes[i]
       }
-      if(snakes[i].l>5) {
-        for (var j in snakes[i].history) {
-          console.log(j)
-        }
-      }
+      // if(snakes[i].l>5) {
+      //   for (var j in snakes[i].history) {
+      //     console.log(j)
+      //   }
+      // }
     }
     socket.emit('game',{snakes:filteredSnakes,balls:filteredBalls})
   }
