@@ -13,10 +13,14 @@ var port = process.env.PORT || 3000;
 
 var game = {};
 
-var ballLimit = 500;
+var ballLimit = 1000;
 var mapDim = 1000;
+var initailSpeed = .1;
 var snakes = {};
-for (var i = 0; i < 20; i++) {
+addAiSnake(30)
+
+function addAiSnake(n) {
+  for (var i = 0; i < n; i++) {
       snakes[uuid()] = {
       x:rint(10,mapDim-10),
       y:rint(10,mapDim-10),
@@ -28,14 +32,16 @@ for (var i = 0; i < 20; i++) {
       history:[],
       ai:true
     }
+  }
 }
+
 
 var balls = {};
 for (var i = 0; i < ballLimit; i++) {
       balls[uuid()] = {
       x:rint(10,mapDim-10),
       y:rint(10,mapDim-10),
-      dim:rint(1,3)
+      dim:rint(1,1)
     }
 }
 
@@ -90,17 +96,8 @@ mainInt = setInterval(function(){
             }
           }
           if(snakes[i].ai == true) {
-            snakes[uuid()] = {
-            x:rint(10,mapDim-10),
-            y:rint(10,mapDim-10),
-            r:80,
-            angle:0,
-            dim:5,
-            speed:2,
-            l:5,
-            history:[],
-            ai:true
-          }
+            addAiSnake(1)
+            
           }
         }
 
@@ -142,7 +139,7 @@ mainInt = setInterval(function(){
           };
         }
         snakes = nb
-},50)
+},200)
 app.get('/*', function(req, res){
   res.sendfile('./index.html'); 
 }); 
@@ -165,7 +162,8 @@ io.on('connection', function(socket){
   socket.on('getGame', function(data){
      if( snakes[socket.id]) {
      snakes[socket.id].angle = data.angle
-     snakes[socket.id].speed = data.speed
+     //snakes[socket.id].speed = data.speed
+     snakes[socket.id].speed = snakes[socket.id].dim/2
      sendGame();
    }
 
@@ -190,7 +188,22 @@ io.on('connection', function(socket){
         filteredBalls[i] = balls[i]
       }
     }
-    socket.emit('game',{snakes:snakes,balls:filteredBalls})
+
+    var filteredSnakes = {};
+    for (var i in snakes) {
+      var a = snakes[i].x - snakes[socket.id].x;
+      var b = snakes[i].y - snakes[socket.id].y;
+      var c = Math.sqrt( a*a + b*b );
+      if(c<snakes[socket.id].r) {
+        filteredSnakes[i] = snakes[i]
+      }
+      if(snakes[i].l>5) {
+        for (var j in snakes[i].history) {
+          console.log(j)
+        }
+      }
+    }
+    socket.emit('game',{snakes:filteredSnakes,balls:filteredBalls})
   }
 
 
