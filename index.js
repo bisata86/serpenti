@@ -17,7 +17,7 @@ var ballLimit = 1000;
 var mapDim = 1000;
 var initailSpeed = .1;
 var snakes = {};
-addAiSnake(150)
+addAiSnake(20)
 
 function addAiSnake(n) {
   for (var i = 0; i < n; i++) {
