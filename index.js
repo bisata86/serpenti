@@ -17,7 +17,7 @@ var ballLimit = 1000;
 var mapDim = 1000;
 var initailSpeed = .1;
 var snakes = {};
-addAiSnake(20)
+addAiSnake(200)
 
 function addAiSnake(n) {
   for (var i = 0; i < n; i++) {
@@ -115,7 +115,7 @@ mainInt = setInterval(function(){
               var a = snakes[k].history[p].x - snakes[i].x;
               var b = snakes[k].history[p].y - snakes[i].y;
               var c = Math.sqrt( a*a + b*b );
-              if(c<1) {
+              if(c<snakes[i].dim/2) {
                 console.log('collisionn')
                 snakes[i].dead = true;
                 for (var n in snakes[i].history) {
@@ -151,7 +151,7 @@ io.on('connection', function(socket){
      snakes[socket.id] = {
       x:rint(10,mapDim-10),
       y:rint(10,mapDim-10),
-      r:80,
+      r:100,
       angle:0,
       dim:5,
       speed:2,

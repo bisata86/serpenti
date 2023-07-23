@@ -28,7 +28,7 @@
             position: absolute;
             border-radius: 100%;
             opacity: .5;
-            transition-duration: .25s;
+            transition-duration: var(--transition-duration);
         }
         .blue {
             background-color: blue !important;
@@ -37,12 +37,12 @@
             background-color: black;
             position: absolute;
             border-radius: 100%;
-            transition-duration: .25s;
+            transition-duration: var(--transition-duration);
         }
         .wall {
             position: absolute;
             background-color: gray;
-            transition-duration: .25s;
+            transition-duration: var(--transition-duration);
         }
         .wallTop {
             
@@ -67,6 +67,9 @@
             border-radius: 100%;
             background-color: red;
             pointer-events: none;
+        }
+        :root {
+          --transition-duration: 0s;
         }
     </style>
     <script type="text/javascript">
@@ -130,8 +133,11 @@
             function displayMessage(data){
                 console.log(data)
             }
+            var time = new Date().getTime()
             socket.on('game',displayGame);
             function displayGame(data){
+                console.log(new Date().getTime() - time)
+                time = new Date().getTime() 
                 //console.log(Object.keys(data.snakes).length)
                 
 
@@ -169,8 +175,9 @@
                            //$('#'+u).remove()
                            var l = (data.snakes[i].history[j].x-gapX-data.snakes[i].dim/2)*scale
                            var r = (data.snakes[i].history[j].y-gapY-data.snakes[i].dim/2)*scale
-                           if(l>0 && l<$(window).width() &&
-                            r>0 && r<$(window).height()) {
+                           if(true) {
+                           //if(l>0 && l<$(window).width() &&
+                            //r>0 && r<$(window).height()) {
                                //if($('#'+u).length==0)
                                $('#cnt').append('<div class="snake" id="'+u+'"></div>')
                                 $('#'+u).css('left',l)
@@ -230,7 +237,7 @@
                 $('.wallleft').css('width',2*scale)
                 $('.wallleft').css('height',1000*scale)
                 socket.emit('getGame',{angle:angle,speed:speed});
-                console.log($('#cnt div').length)
+                //console.log($('#cnt div').length)
             }
             socket.on('start',startGame);
             function startGame(data){
