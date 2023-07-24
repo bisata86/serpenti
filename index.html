@@ -35,7 +35,7 @@
             transition-duration: var(--transition-duration);
         }
         .ball {
-            background-color: black;
+            background-color: green;
             position: absolute;
             border-radius: 100%;
             transition-duration: var(--transition-duration);
@@ -74,7 +74,7 @@
             pointer-events: none;
         }
         :root {
-          --transition-duration: .1s;
+          --transition-duration: 0s;
         }
     </style>
     <script type="text/javascript">
@@ -84,7 +84,7 @@
         }
         var socket = io.connect(current);
         var angle = 0;
-        var speed = 2;
+        var speed = false;
         $(function() {
             socket.emit('join');
             
@@ -103,13 +103,13 @@
 
             })
             $('#joy').on('mousedown',function(e){
-                speed = 3
+                speed = true
             })
             $('#joy').on('mouseup',function(e){
-                speed = 2
+                speed = false
             })
             $('#joy').on('mouseleave',function(e){
-                speed = 2
+                speed = false
             })
             var joyActive = false;
             $('#joy').on('touchmove',function(e){
@@ -145,16 +145,11 @@
             var time = new Date().getTime()
             socket.on('game',displayGame);
             
-            var fps = 100;
+            var fps = 24;
             var ready = true;
 
             function displayGame(data){
-                console.log(new Date().getTime()-time)
-                time = new Date().getTime()
-
-                let root = document.documentElement;
-                root.style.setProperty('--transition-duration', '0.'+time+ "s");
-
+                
 
                 var scale = .5;
                 var urlParams = new URLSearchParams(window.location.search);
@@ -238,9 +233,15 @@
 
                 $('.remove').remove();
 
+                console.log(new Date().getTime()-time)
+                time = new Date().getTime()
+
+                let root = document.documentElement;
+                root.style.setProperty('--transition-duration', '0.1s');
 
                 
                 setTimeout(function(){
+
                     socket.emit('getGame',{angle:angle,speed:speed});
                 },fps)
 

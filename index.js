@@ -27,7 +27,7 @@ function addAiSnake(n) {
       r:0,
       angle:0,
       dim:5,
-      speed:2,
+      speed:1,
       l:5,
       history:[],
       ai:true
@@ -154,7 +154,7 @@ mainInt = setInterval(function(){
   console.log(new Date().getTime()-time)
   time  = new Date().getTime()
 
-},100)
+},50)
 app.get('/*', function(req, res){
   res.sendfile('./index.html'); 
 }); 
@@ -169,7 +169,7 @@ io.on('connection', function(socket){
       //r:1000,
       angle:0,
       dim:5,
-      speed:2,
+      speed:1,
       l:5,
       history:[]
     }
@@ -179,7 +179,9 @@ io.on('connection', function(socket){
      if( snakes[socket.id]) {
 
      snakes[socket.id].angle = data.angle
-     snakes[socket.id].speed = data.speed
+     if(data.speed)
+     snakes[socket.id].speed = 2
+     else snakes[socket.id].speed = 1
      //snakes[socket.id].speed = snakes[socket.id].dim/2
      sendGame();
    }
