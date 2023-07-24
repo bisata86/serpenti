@@ -28,10 +28,11 @@
             position: absolute;
             border-radius: 100%;
             opacity: .5;
-            transition-duration: var(--transition-duration);
+            transition-duration: .2s;
         }
         .blue {
             background-color: blue !important;
+            transition-duration: 0s;
         }
         .ball {
             background-color: black;
@@ -44,9 +45,13 @@
             background-color: gray;
             transition-duration: var(--transition-duration);
         }
-        .wallTop {
-            
-
+        .bg {
+            position: absolute;
+            transition-duration: var(--transition-duration);
+            background-color: #e5e5f7;
+            opacity: 0.8;
+            background-image:  linear-gradient(#444cf7 1px, transparent 1px), linear-gradient(to right, #444cf7 1px, #e5e5f7 1px);
+            background-size: 20px 20px;
         }
         #joy {
             position: absolute;
@@ -57,6 +62,9 @@
             width: 100px;
             height: 100px;
             border:1px solid black;
+            border-radius: 100%;
+            background-color:white;
+
         }
         .pad {
             position: absolute;
@@ -69,7 +77,7 @@
             pointer-events: none;
         }
         :root {
-          --transition-duration: 0s;
+          --transition-duration: .1s;
         }
     </style>
     <script type="text/javascript">
@@ -83,26 +91,35 @@
         $(function() {
             socket.emit('join');
             
-            // $('#joy').on('mousemove',function(e){
-            //     var a = {x:50,y:0}
-            //     var b = {x:50,y:50}
-            //     var c = {x:e.offsetX,y:e.offsetY}
-            //     angle = 180 - ((find_angle(a,b,c) * 180) / Math.PI)
-            //     if(e.offsetX<50) angle = - angle
+            $('#joy').on('mousemove',function(e){
+                var x = e.offsetX;
+                var y = e.offsetY;
+                var a = {x:50,y:0}
+                var b = {x:50,y:50}
+                var c = {x:x,y:y}
+                angle = 180 - ((find_angle(a,b,c) * 180) / Math.PI)
+                if(x<50) angle = - angle
+                if(y>15 && y<80)
+                $('.pad').css('top',y-20)
+                if(x>15 && x<80)
+                $('.pad').css('left',x-20)
 
-            // })
-            // $('#joy').on('mousedown',function(e){
-            //     speed = 3
-            // })
-            // $('#joy').on('mouseup',function(e){
-            //     speed = 2
-            // })
+            })
+            $('#joy').on('mousedown',function(e){
+                speed = 3
+            })
+            $('#joy').on('mouseup',function(e){
+                speed = 2
+            })
+            $('#joy').on('mouseleave',function(e){
+                speed = 2
+            })
             var joyActive = false;
             $('#joy').on('touchmove',function(e){
                
                 //e = e.originalEvent.touches[0]
                 
-                 var rect = e.target.getBoundingClientRect();
+                var rect = e.target.getBoundingClientRect();
                 var x = e.targetTouches[0].pageX - rect.left;
                 var y = e.targetTouches[0].pageY - rect.top;
                 if(joyActive) {
@@ -128,51 +145,47 @@
 
 
 
-            
-            socket.on('message',displayMessage);
-            function displayMessage(data){
-                console.log(data)
-            }
-            var time = new Date().getTime()
+
             socket.on('game',displayGame);
             function displayGame(data){
-                console.log(new Date().getTime() - time)
-                time = new Date().getTime() 
-                //console.log(Object.keys(data.snakes).length)
-                
-
                 var scale = 1;
                 scale = 20/data.snakes[socket.id].dim
                 var gapX = ((data.snakes[socket.id].x)-($(window).width()/2/scale))
                 var gapY = ((data.snakes[socket.id].y)-$(window).height()/2/scale)
                 //$('.snake').remove()
+
+                if($('.bg').length==0)
+                $('#cnt').append('<div class="bg"></div>')
+                $('.bg').css('left',(0-gapX)*scale)
+                $('.bg').css('top',(0-gapY-(2*scale))*scale)
+                $('.bg').css('height',1000*scale)
+                $('.bg').css('width',1000*scale)
+                $('.bg').css('background-size',(1000*scale)/100+'px '+(1000*scale)/100+'px')
+
                 $('.snake').addClass('remove');
                 for (var i in data.snakes) {
                     // $('#'+i).remove()
 
                     
-                    // var l = (data.snakes[i].x-gapX-data.snakes[i].dim/2)*scale;
-                    // var r = (data.snakes[i].y-gapY-data.snakes[i].dim/2)*scale
+                    var l = (data.snakes[i].x-gapX-data.snakes[i].dim/2)*scale;
+                    var r = (data.snakes[i].y-gapY-data.snakes[i].dim/2)*scale
 
-                    // if(l>0 && l<$(window).width() &&
-                    //         r>0 && r<$(window).height()) {
+                    if(l>0 && l<$(window).width() &&
+                            r>0 && r<$(window).height()) {
 
-                    // $('#cnt').append('<div class="snake blue" id="'+i+'"></div>')
-                    // $('#'+i).css('width',data.snakes[i].dim*scale)
-                    // $('#'+i).css('height',data.snakes[i].dim*scale)
+                    $('#cnt').append('<div class="snake blue" id="'+i+'"></div>')
+                    $('#'+i).css('width',data.snakes[i].dim*scale)
+                    $('#'+i).css('height',data.snakes[i].dim*scale)
 
-                    // $('#'+i).css('left',l)
-                    // $('#'+i).css('top',r)
-                    // }
-                    // var tt = 1;
-                    // if(data.snakes[i].l>30)
-                    //     tt = Math.floor(data.snakes[i].l/20)+1
-                    //
+                    $('#'+i).css('left',l)
+                    $('#'+i).css('top',r)
+                    $('#'+i).removeClass('remove')
+                    }
+
                     if(data.snakes[i].history) {
-                       
+                       var d = 0;
                        for (var j = 0; j < data.snakes[i].history.length; j+=1) {
                            var u = i+'his'+j;
-                           //$('#'+u).remove()
                            var l = (data.snakes[i].history[j].x-gapX-data.snakes[i].dim/2)*scale
                            var r = (data.snakes[i].history[j].y-gapY-data.snakes[i].dim/2)*scale
                            if(true) {
@@ -211,6 +224,9 @@
                 }
 
                 $('.remove').remove();
+
+
+
 
                 if($('.wallTop').length==0)
                 $('#cnt').append('<div class="wallTop wall"></div>')
