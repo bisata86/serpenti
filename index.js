@@ -17,14 +17,14 @@ var ballLimit = 250;
 var mapDim = 1000;
 var initailSpeed = .1;
 var snakes = {};
-addAiSnake(10)
+addAiSnake(20)
 
 function addAiSnake(n) {
   for (var i = 0; i < n; i++) {
       snakes[uuid()] = {
       x:rint(10,mapDim-10),
       y:rint(10,mapDim-10),
-      r:80,
+      r:0,
       angle:0,
       dim:5,
       speed:2,
@@ -109,8 +109,15 @@ mainInt = setInterval(function(){
 
       }
       if(snakes[i].ai) {
-        var s = rint(0,10);
-        snakes[i].angle+=s
+        
+        if(snakes[i].y<100) {
+          snakes[i].angle = 0
+        } else {
+          var s = rint(0,10);
+          snakes[i].angle+=s
+        }
+        
+
       }
 
       for (var k in snakes) {
@@ -155,7 +162,8 @@ io.on('connection', function(socket){
      snakes[socket.id] = {
       x:rint(10,mapDim-10),
       y:rint(10,mapDim-10),
-      r:100,
+      //r:100,
+      r:1000,
       angle:0,
       dim:5,
       speed:2,

@@ -46,8 +46,8 @@
             transition-duration: var(--transition-duration);
             background-color: #e5e5f7;
             opacity: 0.8;
-            background-image:  linear-gradient(#444cf7 1px, transparent 1px), linear-gradient(to right, #444cf7 1px, #e5e5f7 1px);
-            background-size: 20px 20px;
+            background-image: linear-gradient(#444cf7 1px, transparent 1px), linear-gradient(to right, #444cf7 1px, #e5e5f7 1px);
+
 
         }
         #joy {
@@ -74,7 +74,7 @@
             pointer-events: none;
         }
         :root {
-          --transition-duration: .1s;
+          --transition-duration: .15s;
         }
     </style>
     <script type="text/javascript">
@@ -145,7 +145,10 @@
 
             socket.on('game',displayGame);
             function displayGame(data){
-                var scale = 1;
+                var scale = .5;
+                var urlParams = new URLSearchParams(window.location.search);
+                var myParam = urlParams.get('all');
+                if(!myParam)
                 scale = 20/data.snakes[socket.id].dim
                 var gapX = ((data.snakes[socket.id].x)-($(window).width()/2/scale))
                 var gapY = ((data.snakes[socket.id].y)-$(window).height()/2/scale)
@@ -157,7 +160,9 @@
                 $('.bg').css('top',(0-gapY)*scale)
                 $('.bg').css('height',1000*scale)
                 $('.bg').css('width',1000*scale)
-                $('.bg').css('background-size',(1000*scale)/100+'px '+(1000*scale)/100+'px')
+                $('.bg').css('background-size',(1000*scale)/25+'px '+(1000*scale)/25+'px')
+        
+                           
 
                 $('.snake').addClass('remove');
                 for (var i in data.snakes) {
@@ -264,15 +269,6 @@
     <div id="joy">
         <div class="pad"></div>
     </div>
-    <!-- <div class="status">
-        <div class="s"></div>
-    </div>
-    <div class="landCont">
-        
-    </div>
-    <div class="controls">
-        <input type="button" class="us" value='upgrade s'></input>
-    </div> -->
 </body>
 
 </html>
