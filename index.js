@@ -165,8 +165,8 @@ io.on('connection', function(socket){
      snakes[socket.id] = {
       x:rint(10,mapDim-10),
       y:rint(10,mapDim-10),
-      //r:100,
-      r:1000,
+      r:100,
+      //r:1000,
       angle:0,
       dim:5,
       speed:2,
