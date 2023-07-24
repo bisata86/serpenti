@@ -13,7 +13,7 @@ var port = process.env.PORT || 3000;
 
 var game = {};
 
-var ballLimit = 1500;
+var ballLimit = 250;
 var mapDim = 1000;
 var initailSpeed = .1;
 var snakes = {};
@@ -39,10 +39,8 @@ function addAiSnake(n) {
 var balls = {};
 for (var i = 0; i < ballLimit; i++) {
       balls[uuid()] = {
-      //x:rint(10,mapDim-10),
-      //y:rint(10,mapDim-10),
-      x:rint(0,mapDim),
-      y:rint(mapDim,mapDim),
+      x:rint(10,mapDim-10),
+      y:rint(10,mapDim-10),
       dim:rint(1,3)
     }
 }
@@ -155,10 +153,8 @@ io.set('origins', '*:*');
 io.on('connection', function(socket){
   socket.on('join', function(data){
      snakes[socket.id] = {
-      //x:rint(10,mapDim-10),
-      //y:rint(10,mapDim-10),
-      x:rint(100,100),
-      y:rint(100,100),
+      x:rint(10,mapDim-10),
+      y:rint(10,mapDim-10),
       r:100,
       angle:0,
       dim:5,
@@ -170,6 +166,7 @@ io.on('connection', function(socket){
   }); 
   socket.on('getGame', function(data){
      if( snakes[socket.id]) {
+
      snakes[socket.id].angle = data.angle
      snakes[socket.id].speed = data.speed
      //snakes[socket.id].speed = snakes[socket.id].dim/2
