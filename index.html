@@ -28,11 +28,11 @@
             position: absolute;
             border-radius: 100%;
             opacity: .5;
-            transition-duration: .2s;
+            transition-duration: var(--transition-duration);
         }
         .blue {
             background-color: blue !important;
-            transition-duration: .2s;
+            transition-duration: var(--transition-duration);
         }
         .ball {
             background-color: black;
@@ -74,7 +74,7 @@
             pointer-events: none;
         }
         :root {
-          --transition-duration: .15s;
+          --transition-duration: .1s;
         }
     </style>
     <script type="text/javascript">
@@ -142,9 +142,20 @@
 
 
 
-
+            var time = new Date().getTime()
             socket.on('game',displayGame);
+            
+            var fps = 100;
+            var ready = true;
+
             function displayGame(data){
+                console.log(new Date().getTime()-time)
+                time = new Date().getTime()
+
+                let root = document.documentElement;
+                root.style.setProperty('--transition-duration', '0.'+time+ "s");
+
+
                 var scale = .5;
                 var urlParams = new URLSearchParams(window.location.search);
                 var myParam = urlParams.get('all');
@@ -228,9 +239,11 @@
                 $('.remove').remove();
 
 
+                
+                setTimeout(function(){
+                    socket.emit('getGame',{angle:angle,speed:speed});
+                },fps)
 
-
-                socket.emit('getGame',{angle:angle,speed:speed});
                 //console.log($('#cnt div').length)
             }
             socket.on('start',startGame);

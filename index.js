@@ -69,7 +69,7 @@ mainInt = setInterval(function(){
           var a = balls[m].x - snakes[i].x;
           var b = balls[m].y - snakes[i].y;
           var c = Math.sqrt( a*a + b*b );
-          if(c<snakes[i].dim/2) {
+          if(c<(snakes[i].dim/2+balls[m].dim/2)) {
             balls[m].taken = true;
             snakes[i].l+=balls[m].dim
             snakes[i].r+=2
