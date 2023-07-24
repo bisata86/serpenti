@@ -39,9 +39,11 @@ function addAiSnake(n) {
 var balls = {};
 for (var i = 0; i < ballLimit; i++) {
       balls[uuid()] = {
-      x:rint(10,mapDim-10),
-      y:rint(10,mapDim-10),
-      dim:rint(1,1)
+      //x:rint(10,mapDim-10),
+      //y:rint(10,mapDim-10),
+      x:rint(0,mapDim),
+      y:rint(mapDim,mapDim),
+      dim:rint(1,3)
     }
 }
 
@@ -153,8 +155,10 @@ io.set('origins', '*:*');
 io.on('connection', function(socket){
   socket.on('join', function(data){
      snakes[socket.id] = {
-      x:rint(10,mapDim-10),
-      y:rint(10,mapDim-10),
+      //x:rint(10,mapDim-10),
+      //y:rint(10,mapDim-10),
+      x:rint(100,100),
+      y:rint(100,100),
       r:100,
       angle:0,
       dim:5,

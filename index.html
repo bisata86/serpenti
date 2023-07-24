@@ -40,11 +40,7 @@
             border-radius: 100%;
             transition-duration: var(--transition-duration);
         }
-        .wall {
-            position: absolute;
-            background-color: gray;
-            transition-duration: var(--transition-duration);
-        }
+
         .bg {
             position: absolute;
             transition-duration: var(--transition-duration);
@@ -52,6 +48,7 @@
             opacity: 0.8;
             background-image:  linear-gradient(#444cf7 1px, transparent 1px), linear-gradient(to right, #444cf7 1px, #e5e5f7 1px);
             background-size: 20px 20px;
+
         }
         #joy {
             position: absolute;
@@ -157,7 +154,7 @@
                 if($('.bg').length==0)
                 $('#cnt').append('<div class="bg"></div>')
                 $('.bg').css('left',(0-gapX)*scale)
-                $('.bg').css('top',(0-gapY-(2*scale))*scale)
+                $('.bg').css('top',(0-gapY)*scale)
                 $('.bg').css('height',1000*scale)
                 $('.bg').css('width',1000*scale)
                 $('.bg').css('background-size',(1000*scale)/100+'px '+(1000*scale)/100+'px')
@@ -228,30 +225,6 @@
 
 
 
-                if($('.wallTop').length==0)
-                $('#cnt').append('<div class="wallTop wall"></div>')
-                $('.wallTop').css('left',(0-gapX)*scale)
-                $('.wallTop').css('top',(0-gapY-(2*scale))*scale)
-                $('.wallTop').css('height',2*scale)
-                $('.wallTop').css('width',1000*scale)
-                if($('.wallBottom').length==0)
-                $('#cnt').append('<div class="wallBottom wall"></div>')
-                $('.wallBottom').css('left',(0-gapX)*scale)
-                $('.wallBottom').css('top',(1000-gapY-(2*scale))*scale)
-                $('.wallBottom').css('height',2*scale)
-                $('.wallBottom').css('width',1000*scale)
-                if($('.wallright').length==0)
-                $('#cnt').append('<div class="wallright wall"></div>')
-                $('.wallright').css('left',(0-gapX)*scale)
-                $('.wallright').css('top',(0-gapY-(2*scale))*scale)
-                $('.wallright').css('width',2*scale)
-                $('.wallright').css('height',1000*scale)
-                if($('.wallleft').length==0)
-                $('#cnt').append('<div class="wallleft wall"></div>')
-                $('.wallleft').css('left',(1000-gapX)*scale)
-                $('.wallleft').css('top',(0-gapY-(2*scale))*scale)
-                $('.wallleft').css('width',2*scale)
-                $('.wallleft').css('height',1000*scale)
                 socket.emit('getGame',{angle:angle,speed:speed});
                 //console.log($('#cnt div').length)
             }
