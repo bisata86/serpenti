@@ -46,6 +46,7 @@ for (var i = 0; i < ballLimit; i++) {
 }
 
 var mainInt;
+var time = new Date().getTime()
 mainInt = setInterval(function(){
   for (var i in snakes) {
     //if(snakes[i].x<100)
@@ -142,15 +143,17 @@ mainInt = setInterval(function(){
         }
       }
 
-
   } 
-        var nb = {}
-        for (var m in snakes) {
-          if(!snakes[m].dead) {
-            nb[m] = snakes[m]
-          };
-        }
-        snakes = nb
+  var nb = {}
+  for (var m in snakes) {
+    if(!snakes[m].dead) {
+      nb[m] = snakes[m]
+    };
+  }
+  snakes = nb
+  console.log(new Date().getTime()-time)
+  time  = new Date().getTime()
+
 },100)
 app.get('/*', function(req, res){
   res.sendfile('./index.html'); 
@@ -224,7 +227,6 @@ io.on('connection', function(socket){
 });
 
 function distance(p1,p2) {
-  console.log(p1,p2)
   var a = p1.x - p2.x;
   var b = p1.y - p2.y;
   var c = Math.sqrt( a*a + b*b );
